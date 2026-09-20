@@ -85,7 +85,6 @@ class CubeCollection
 
     public function setMember(Member $member): static
     {
-        // set the owning side of the relation if necessary
         if ($member->getCubeCollection() !== $this) {
             $member->setCubeCollection($this);
         }
