@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cube n°{{ cube.id }}{% endblock %}
+
+{% block body %}
+
+    <h1>Cube</h1>
+
+    {% dump cube %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cube.id }}</td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>{{ cube.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('cube_collection_show', {'id': cube.cubeCollection.id}) }}">
+        Back to collection
+    </a>
+
+{% endblock %}

@@ -6,6 +6,8 @@ use App\Repository\CubeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\Cube;
+use Doctrine\Persistence\ManagerRegistry;
 
 final class CubeController extends AbstractController
 {
@@ -34,23 +36,17 @@ final class CubeController extends AbstractController
     }
     
     #[Route('/cube/{id}', name: 'cube_show', requirements: ['id' => '\d+'])]
-    public function show(int $id, CubeRepository $cubeRepository): Response
+    public function show(ManagerRegistry $doctrine, $id): Response
     {
-        $cube = $cubeRepository->find($id);
+        $cubeRepo = $doctrine->getRepository(Cube::class);
+        $cube = $cubeRepo->find($id);
         
         if (!$cube) {
-            throw $this->createNotFoundException('Cube non trouvé');
+            throw $this->createNotFoundException('The cube does not exist');
         }
         
-        $html = '<h1>Cube #' . $cube->getId() . '</h1>';
-        $html .= '<p>Description : ' . $cube->getDescription() . '</p>';
-        
-        $html .= '<p>';
-        $html .= '<a href="' . $this->generateUrl('cube_list') . '">';
-        $html .= 'Retour à la liste des cubes';
-        $html .= '</a>';
-        $html .= '</p>';
-        
-        return new Response($html);
+        return $this->render('cube/show.html.twig', [
+            'cube' => $cube
+        ]);
     }
 }

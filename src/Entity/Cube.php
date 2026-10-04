@@ -48,4 +48,9 @@ class Cube
         
         return $this;
     }
+    
+    public function __toString(): string
+    {
+        return 'Cube #' . $this->id . ' : ' . $this->description;
+    }
 }

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cube Collection n°{{ cubeCollection.id }}{% endblock %}
+
+{% block body %}
+
+    <h1>Cube Collection</h1>
+
+    {% dump cubeCollection %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cubeCollection.id }}</td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>{{ cubeCollection.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Cubes in this collection</h2>
+
+    <ul>
+        {% for cube in cubeCollection.cubes %}
+            <li>
+                <a href="{{ path('cube_show', {'id': cube.id}) }}">
+                    {{ cube.description }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('cube_collection_list') }}">Back to list</a>
+
+{% endblock %}
