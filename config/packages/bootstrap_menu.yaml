@@ -1,0 +1,11 @@
+
+bootstrap_menu:
+    menus:
+        main:
+            items:
+                cube_collections:
+                    label: 'Cube Collections'
+                    route: 'cube_collection_list'
+                cubes:
+                    label: 'Cubes'
+                    route: 'cube_list'

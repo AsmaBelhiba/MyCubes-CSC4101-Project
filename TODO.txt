@@ -1,0 +1,25 @@
+Projet CSC4101 - myCubes
+Suivi de l'avancement
+
+REALISE
+- Entites Cube, CubeCollection et Member.
+- Association OneToMany entre CubeCollection et Cube.
+- Association ManyToOne inverse entre Cube et CubeCollection.
+- Association OneToOne entre Member et CubeCollection.
+- Controleurs de consultation des cubes et des collections.
+- Templates Twig pour consulter un cube et une collection.
+- Navigation entre les collections et les cubes.
+- Verification du mapping Doctrine et du schema de base de donnees.
+- Tests manuels de navigation dans le navigateur.
+
+A VERIFIER AVANT LA REMISE
+- Installation des dependances depuis une archive propre.
+- Demarrage de l'application apres extraction de l'archive.
+- Disponibilite des donnees de test apres installation.
+- Chargement des fixtures avec doctrine:fixtures:load.
+- Verification finale des pages de consultation.
+
+A FAIRE OU A COMPLETER SELON LES CONSIGNES
+- Completer les fonctionnalites non encore implementees.
+- Ameliorer la documentation si necessaire.
+- Poursuivre le developpement lors des prochaines seances de TP.
