@@ -1,0 +1,46 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie de cubes{% endblock %}
+
+{% block body %}
+    <h1>Galerie de cubes #{{ cube_gallery.id }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cube_gallery.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ cube_gallery.description }}</td>
+            </tr>
+            <tr>
+                <th>Publiée</th>
+                <td>{{ cube_gallery.publiee ? 'Oui' : 'Non' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Cubes associés</h2>
+
+    {% for cube in cube_gallery.cubes %}
+        <p>
+            <a href="{{ path('app_cube_gallery_cube_show', {
+                'cube_gallery_id': cube_gallery.id,
+                'cube_id': cube.id
+            }) }}">
+                Cube #{{ cube.id }} : {{ cube.description }}
+            </a>
+        </p>
+    {% else %}
+        <p>Aucun cube associé à cette galerie.</p>
+    {% endfor %}
+
+    <a href="{{ path('app_cube_gallery_index') }}">Retour à la liste</a>
+
+    <a href="{{ path('app_cube_gallery_edit', {'id': cube_gallery.id}) }}">Modifier</a>
+
+    {{ include('cube_gallery/_delete_form.html.twig') }}
+{% endblock %}

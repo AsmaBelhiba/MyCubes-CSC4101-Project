@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CubeGallery{% endblock %}
+
+{% block body %}
+    <h1>Edit CubeGallery</h1>
+
+    {{ include('cube_gallery/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_cube_gallery_index') }}">back to list</a>
+
+    {{ include('cube_gallery/_delete_form.html.twig') }}
+{% endblock %}

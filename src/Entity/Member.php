@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,17 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'member', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?CubeCollection $cubeCollection = null;
+
+    /**
+     * @var Collection<int, CubeGallery>
+     */
+    #[ORM\OneToMany(targetEntity: CubeGallery::class, mappedBy: 'member')]
+    private Collection $cubeGalleries;
+
+    public function __construct()
+    {
+        $this->cubeGalleries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -124,6 +137,36 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCubeCollection(CubeCollection $cubeCollection): static
     {
         $this->cubeCollection = $cubeCollection;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CubeGallery>
+     */
+    public function getCubeGalleries(): Collection
+    {
+        return $this->cubeGalleries;
+    }
+
+    public function addCubeGallery(CubeGallery $cubeGallery): static
+    {
+        if (!$this->cubeGalleries->contains($cubeGallery)) {
+            $this->cubeGalleries->add($cubeGallery);
+            $cubeGallery->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCubeGallery(CubeGallery $cubeGallery): static
+    {
+        if ($this->cubeGalleries->removeElement($cubeGallery)) {
+            // set the owning side to null (unless already changed)
+            if ($cubeGallery->getMember() === $this) {
+                $cubeGallery->setMember(null);
+            }
+        }
 
         return $this;
     }

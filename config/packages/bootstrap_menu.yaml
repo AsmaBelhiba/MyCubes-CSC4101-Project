@@ -5,7 +5,7 @@ bootstrap_menu:
             items:
                 cube_collections:
                     label: 'Cube Collections'
-                    route: 'cube_collection_list'
+                    route: 'app_cube_collection_index'
                 cubes:
                     label: 'Cubes'
-                    route: 'cube_list'
+                    route: 'app_cube_index'

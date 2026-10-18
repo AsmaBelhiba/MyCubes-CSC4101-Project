@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Cube{% endblock %}
+
+{% block body %}
+    <h1>Edit Cube</h1>
+
+    {{ include('cube/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_cube_index') }}">back to list</a>
+
+    {{ include('cube/_delete_form.html.twig') }}
+{% endblock %}

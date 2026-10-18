@@ -1,92 +1,143 @@
 # MyCubes
 
-MyCubes est une application web développée dans le cadre du projet de CSC4101.
-
-Le projet est réalisé avec **Symfony** et **PHP**. Il a pour objectif de gérer des informations liées aux cubes Rubik's, à leurs collections et aux membres de l'application.
-
-## Présentation du projet
-
-L'application contient actuellement trois entités principales :
-
-* **Cube** — représente un cube Rubik's avec sa description et sa collection.
-* **CubeCollection** — représente une collection de cubes.
-* **Member** — représente un membre de l'application.
-
-Le projet utilise **Doctrine ORM** pour gérer les données de l'application et leur accès à la base de données.
-
-## Fonctionnalités actuelles
-
-Les premières pages publiques ont été mises en place pour l'entité `Cube`.
-
-### Liste des cubes
-
-La page `/cube` permet d'afficher les cubes présents dans la base de données.
-
-Pour chaque cube, on affiche :
-
-* son identifiant ;
-* sa description.
-
-Chaque cube peut être sélectionné pour accéder à sa page individuelle.
-
-### Détails d'un cube
-
-Chaque cube possède une page accessible avec l'adresse :
-
-```text
-/cube/{id}
-```
-
-Cette page affiche les informations du cube sélectionné et propose un lien permettant de revenir à la liste des cubes.
-
-Si l'identifiant ne correspond à aucun cube, l'application retourne une erreur 404.
+MyCubes est une application web développée dans le cadre du projet CSC4101. Elle permet de gérer des cubes Rubik's, des collections, des membres et des galeries publiques de cubes.
 
 ## Technologies utilisées
 
-* PHP
-* Symfony
-* Doctrine ORM
-* Twig
-* HTML
-* Git / GitHub
+- PHP 8
+- Symfony 7.4
+- Doctrine ORM
+- Twig
+- SQLite
+- Bootstrap
+- Git et GitHub
+
+## Modèle de données
+
+L'application repose sur les entités suivantes :
+
+- **Member** : représente un membre identifié par son adresse e-mail.
+- **CubeCollection** : représente l'inventaire personnel d'un membre.
+- **Cube** : représente un cube Rubik's associé à une collection.
+- **CubeGallery** : représente une galerie permettant de présenter des cubes.
+
+### Associations
+
+- **CubeCollection – Cube** : OneToMany / ManyToOne. Une collection peut contenir plusieurs cubes.
+- **Member – CubeCollection** : OneToOne. Un membre est associé à un inventaire.
+- **Cube – CubeGallery** : ManyToMany. Une galerie peut présenter plusieurs cubes et un cube peut apparaître dans plusieurs galeries.
+
+## Fonctionnalités implémentées
+
+### Gestion des cubes
+
+- Affichage de la liste des cubes.
+- Consultation des détails d'un cube.
+- Création, modification et suppression des cubes à travers les formulaires générés.
+
+### Gestion des collections
+
+- Affichage de la liste des collections.
+- Consultation des détails d'une collection et de ses cubes.
+- Création, modification et suppression des collections à travers les formulaires générés.
+- Navigation entre les cubes et leurs collections.
+
+### Membres
+
+- Affichage de la liste des membres.
+- Consultation des informations d'un membre.
+- Accès à l'inventaire associé à un membre.
+- Navigation entre l'inventaire et la page du membre.
+
+### Galeries de cubes
+
+- Affichage des galeries et consultation de leurs détails.
+- Affichage des informations d'un cube dans le contexte de la galerie.
+- Vérification que le cube consulté appartient bien à la galerie concernée.
+
+## Pages principales
+
+| Fonctionnalité | URL |
+|---|---|
+| Liste des cubes | `/cube` |
+| Détails d'un cube | `/cube/{id}` |
+| Liste des collections | `/cube-collection` |
+| Détails d'une collection | `/cube-collection/{id}` |
+| Liste des membres | `/member` |
+| Détails d'un membre | `/member/{id}` |
+
+Les routes des galeries sont définies dans `CubeGalleryController.php`.
 
 ## Structure du projet
-
-Les principaux éléments utilisés actuellement sont :
 
 ```text
 src/
 ├── Controller/
-│   └── CubeController.php
+│   ├── CubeController.php
+│   ├── CubeCollectionController.php
+│   ├── CubeGalleryController.php
+│   └── MemberController.php
 ├── Entity/
 │   ├── Cube.php
 │   ├── CubeCollection.php
+│   ├── CubeGallery.php
 │   └── Member.php
+├── Form/
 └── Repository/
 
 templates/
-└── cube/
-    └── index.html.twig
+├── cube/
+├── cube_collection/
+├── cube_gallery/
+└── member/
+
+migrations/
 ```
 
-## Lancer le projet
+## Installation et lancement
 
-Après avoir récupéré le projet et installé les dépendances, lancer le serveur Symfony avec :
+### Prérequis
+
+- PHP 8 avec les extensions nécessaires à Symfony et SQLite.
+- Composer.
+- Symfony CLI.
+
+### Installer les dépendances
+
+Depuis le répertoire du projet, exécuter :
+
+```bash
+symfony composer install
+```
+
+### Lancer le serveur
 
 ```bash
 symfony server:start
 ```
 
-L'application est ensuite accessible à l'adresse locale indiquée par Symfony.
+Ouvrir ensuite l'adresse locale indiquée par Symfony CLI dans le navigateur.
 
-## Développement
+### Base de données
 
-Le projet est développé progressivement dans le cadre des travaux pratiques de CSC4101.
+La configuration du projet utilise SQLite. Les migrations Doctrine se trouvent dans le répertoire `migrations/`.
 
-De nouvelles pages et fonctionnalités seront ajoutées au fur et à mesure de l'avancement du projet.
+Pour vérifier l'état du schéma de base de données :
+
+```bash
+symfony console doctrine:schema:validate
+```
+
+Pour charger les fixtures de test, si nécessaire :
+
+```bash
+symfony console doctrine:fixtures:load
+```
+
+**Attention :** le chargement des fixtures peut remplacer les données existantes.
 
 ## Auteur
 
 **Asma Belhiba**
 
-Projet CSC4101 — Symfony
+Projet CSC4101 — Application Symfony MyCubes

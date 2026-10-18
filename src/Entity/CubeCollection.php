@@ -26,6 +26,7 @@ class CubeCollection
 
     #[ORM\OneToOne(mappedBy: 'cubeCollection', cascade: ['persist', 'remove'])]
     private ?Member $member = null;
+
     
     public function __construct()
     {
@@ -93,4 +94,5 @@ class CubeCollection
 
         return $this;
     }
+
 }

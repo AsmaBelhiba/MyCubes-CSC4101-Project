@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CubeCollection{% endblock %}
+
+{% block body %}
+    <h1>Create new CubeCollection</h1>
+
+    {{ include('cube_collection/_form.html.twig') }}
+
+    <a href="{{ path('app_cube_collection_index') }}">back to list</a>
+{% endblock %}

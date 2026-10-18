@@ -1,12 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cube n°{{ cube.id }}{% endblock %}
+{% block title %}Cube{% endblock %}
 
 {% block body %}
-
     <h1>Cube</h1>
-
-    {% dump cube %}
 
     <table class="table">
         <tbody>
@@ -14,7 +11,6 @@
                 <th>Id</th>
                 <td>{{ cube.id }}</td>
             </tr>
-
             <tr>
                 <th>Description</th>
                 <td>{{ cube.description }}</td>
@@ -22,8 +18,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('cube_collection_show', {'id': cube.cubeCollection.id}) }}">
-        Back to collection
-    </a>
+    <a href="{{ path('app_cube_index') }}">back to list</a>
 
+    <a href="{{ path('app_cube_edit', {'id': cube.id}) }}">edit</a>
+
+    {{ include('cube/_delete_form.html.twig') }}
 {% endblock %}

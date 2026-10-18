@@ -1,0 +1,44 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Galeries de cubes{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Galeries de cubes</h1>
+
+        <a href="{{ path('app_cube_gallery_new') }}" class="btn btn-primary mb-3">
+            Créer une galerie
+        </a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Description</th>
+                    <th>Publiée</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for cube_gallery in cube_galleries %}
+                <tr>
+                    <td>{{ cube_gallery.id }}</td>
+                    <td>{{ cube_gallery.description }}</td>
+                    <td>{{ cube_gallery.publiee ? 'Oui' : 'Non' }}</td>
+                    <td>
+                        <a href="{{ path('app_cube_gallery_show', {'id': cube_gallery.id}) }}"
+                           class="btn btn-sm btn-primary">Voir</a>
+                        <a href="{{ path('app_cube_gallery_edit', {'id': cube_gallery.id}) }}"
+                           class="btn btn-sm btn-secondary">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune galerie trouvée.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
