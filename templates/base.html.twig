@@ -55,6 +55,38 @@
                            href="{{ path('app_member_index') }}">
                             Members
                         </a>
+                        
+                        
+                        {# Authentication menu #}
+
+						<hr>	
+
+                        {% if app.user %}			
+
+    						<div class="sidebar-label">
+        						ACCOUNT
+    						</div>
+
+  						 	<div class="sidebar-extra-link">
+                                {{ app.user.userIdentifier }}
+    						</div>
+
+    						<a class="sidebar-extra-link"
+       							href="{{ path('app_logout') }}">
+        						<i class="bi bi-box-arrow-right"></i>
+        						Logout
+    						</a>
+
+                        {% else %}
+
+    <a class="sidebar-extra-link"
+       href="{{ path('app_login') }}">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Login
+    </a>
+
+{% endif %}
+                        
                     </nav>
 
                     <div class="sidebar-footer">
