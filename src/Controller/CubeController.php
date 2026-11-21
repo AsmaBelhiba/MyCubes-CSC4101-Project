@@ -54,6 +54,12 @@ final class CubeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($cube);
             $entityManager->flush();
+        
+            
+            $this->addFlash(
+                'success',
+                'Your cube has been successfully created!'
+                );
 
             
             return $this->redirectToRoute(
@@ -102,6 +108,8 @@ final class CubeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            
+            $this->addFlash('success', 'Cube successfully updated!');
 
             return $this->redirectToRoute(
                 'app_cube_collection_show',
@@ -128,6 +136,7 @@ final class CubeController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$cube->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($cube);
             $entityManager->flush();
+            $this->addFlash('success', 'Cube successfully deleted!');
         }
 
         return $this->redirectToRoute(

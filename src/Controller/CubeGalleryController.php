@@ -72,6 +72,7 @@ final class CubeGalleryController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager->persist($cubeGallery);
                 $entityManager->flush();
+                $this->addFlash('success', 'Gallery successfully created!');
                 
                 return $this->redirectToRoute(
                     'app_member_show',
@@ -147,6 +148,7 @@ final class CubeGalleryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            $this->addFlash('success', 'Gallery successfully updated!');
 
             
             return $this->redirectToRoute(
@@ -176,6 +178,7 @@ final class CubeGalleryController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$cubeGallery->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($cubeGallery);
             $entityManager->flush();
+            $this->addFlash('success', 'Gallery successfully deleted!');
         }
 
         return $this->redirectToRoute(

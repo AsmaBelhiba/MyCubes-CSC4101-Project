@@ -50,6 +50,13 @@
                            href="{{ path('app_cube_gallery_index') }}">
                             Galleries
                         </a>
+                        
+                        {% if app.user %}
+    						<a class="sidebar-extra-link"
+       							href="{{ path('app_favorite_index') }}">
+        							❤️ My Favorites
+    						</a>
+                        {% endif %}
 
                         <a class="sidebar-extra-link"
                            href="{{ path('app_member_index') }}">
@@ -98,6 +105,15 @@
             {% endblock %}
 
             <main class="site-content">
+            	
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+        				<div class="flash-message flash-{{ label }}">
+                            {{ message }}
+        				</div>
+                    {% endfor %}
+                {% endfor %}
+            	
                 {% block body %}
                 {% endblock %}
             </main>

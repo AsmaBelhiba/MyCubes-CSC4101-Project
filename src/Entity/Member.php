@@ -42,10 +42,18 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: CubeGallery::class, mappedBy: 'member')]
     private Collection $cubeGalleries;
+    
+    /**
+     * @var Collection<int, Cube>
+     */
+    #[ORM\ManyToMany(targetEntity: Cube::class)]
+    #[ORM\JoinTable(name: 'member_favorite_cube')]
+    private Collection $favoriteCubes;
 
     public function __construct()
     {
         $this->cubeGalleries = new ArrayCollection();
+        $this->favoriteCubes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,4 +178,30 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
+    
+    /**
+     * @return Collection<int, Cube>
+     */
+    public function getFavoriteCubes(): Collection
+    {
+        return $this->favoriteCubes;
+    }
+    
+    public function addFavoriteCube(Cube $cube): static
+    {
+        if (!$this->favoriteCubes->contains($cube)) {
+            $this->favoriteCubes->add($cube);
+        }
+        
+        return $this;
+    }
+    
+    public function removeFavoriteCube(Cube $cube): static
+    {
+        $this->favoriteCubes->removeElement($cube);
+        
+        return $this;
+    }
+    
 }

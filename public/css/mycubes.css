@@ -567,3 +567,24 @@ a:hover {
 .rubik-icon span:nth-child(5n) {
     background: #f8f7f0;
 }
+
+/* Flash messages */
+.flash-message {
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.flash-success {
+    background-color: #eaf7ee;
+    color: #20683c;
+    border-left: 4px solid #2e9d59;
+}
+
+.flash-error {
+    background-color: #fdecec;
+    color: #a52a2a;
+    border-left: 4px solid #dc3545;
+}

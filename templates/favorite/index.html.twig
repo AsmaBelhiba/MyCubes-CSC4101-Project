@@ -1,0 +1,55 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}My Favorites | myCubes{% endblock %}
+
+{% block body %}
+    <h1>My Favorites ❤️</h1>
+
+    <p>Discover the cubes you've saved from other members' galleries.</p>
+
+    {% if favoriteCubes is empty %}
+        <p>You haven't added any cubes to your favorites yet.</p>
+    {% else %}
+        {% for cube in favoriteCubes %}
+            <div class="cube-card">
+                <h3>{{ cube.description }}</h3>
+                <p>Cube #{{ cube.id }}</p>
+
+                {# Find an accessible public gallery #}
+                {% set publicGallery = null %}
+
+                {% for gallery in cube.cubeGalleries %}
+                    {% if gallery.publiee
+                        and gallery.member != app.user
+                        and publicGallery is null %}
+                        {% set publicGallery = gallery %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if publicGallery %}
+                    <a href="{{ path('app_cube_gallery_cube_show', {
+                        'cube_gallery_id': publicGallery.id,
+                        'cube_id': cube.id
+                    }) }}">
+                        View Cube
+                    </a>
+                {% else %}
+                    <p>This cube is no longer publicly available.</p>
+                {% endif %}
+
+                <form method="post"
+                      action="{{ path('app_favorite_remove', {'id': cube.id}) }}">
+
+                    <input type="hidden"
+                           name="_token"
+                           value="{{ csrf_token('favorite_remove' ~ cube.id) }}">
+
+                    <button type="submit">
+                        Remove from Favorites
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

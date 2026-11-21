@@ -7,6 +7,27 @@
     <h1>Cube</h1>
 
     {% dump cube %}
+    
+    
+{% if app.user
+    and cube_gallery.publiee
+    and cube_gallery.member.id != app.user.id
+    and cube not in app.user.favoriteCubes %}
+
+    <form method="post"
+          action="{{ path('app_favorite_add', {'id': cube.id}) }}">
+
+        <input type="hidden"
+               name="_token"
+               value="{{ csrf_token('favorite_add' ~ cube.id) }}">
+
+        <button type="submit">
+            ❤️ Add to Favorites
+        </button>
+    </form>
+
+{% endif %}
+    
 
     <table class="table">
         <tbody>

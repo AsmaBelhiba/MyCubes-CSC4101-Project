@@ -1,25 +1,19 @@
-Projet CSC4101 - myCubes
-Suivi de l'avancement
+# TODO : MyCubes
 
-REALISE
-- Entites Cube, CubeCollection et Member.
-- Association OneToMany entre CubeCollection et Cube.
-- Association ManyToOne inverse entre Cube et CubeCollection.
-- Association OneToOne entre Member et CubeCollection.
-- Controleurs de consultation des cubes et des collections.
-- Templates Twig pour consulter un cube et une collection.
-- Navigation entre les collections et les cubes.
-- Verification du mapping Doctrine et du schema de base de donnees.
-- Tests manuels de navigation dans le navigateur.
+Statut : Projet terminé
 
-A VERIFIER AVANT LA REMISE
-- Installation des dependances depuis une archive propre.
-- Demarrage de l'application apres extraction de l'archive.
-- Disponibilite des donnees de test apres installation.
-- Chargement des fixtures avec doctrine:fixtures:load.
-- Verification finale des pages de consultation.
+Toutes les étapes principales du guide CSC4101 ont été réalisées.
 
-A FAIRE OU A COMPLETER SELON LES CONSIGNES
-- Completer les fonctionnalites non encore implementees.
-- Ameliorer la documentation si necessaire.
-- Poursuivre le developpement lors des prochaines seances de TP.
+Fonctionnalités terminées :
+- Gestion des membres, collections, cubes et galeries.
+- Opérations CRUD et gestion des images avec VichUploader.
+- Authentification et gestion des rôles.
+- Contrôle d'accès selon le propriétaire et le rôle utilisateur.
+- Gestion des galeries publiques et privées.
+- Affichage des données selon l'utilisateur connecté.
+
+Fonctionnalités facultatives réalisées (partie 18) :
+- Ajout de messages flash après les opérations CRUD.
+- Mise en place d'un système de favoris : ajout, consultation et suppression des favoris.
+
+Les fonctionnalités ont été testées progressivement pendant le développement.
