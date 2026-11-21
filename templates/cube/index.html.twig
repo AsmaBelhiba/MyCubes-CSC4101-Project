@@ -1,35 +1,64 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Cube index{% endblock %}
+{% block title %}My Cubes{% endblock %}
 
 {% block body %}
-    <h1>Cube index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <h1>My Cubes</h1>
+
+    <div class="cube-list">
+
         {% for cube in cubes %}
-            <tr>
-                <td>{{ cube.id }}</td>
-                <td>{{ cube.description }}</td>
-                <td>
-                    <a href="{{ path('app_cube_show', {'id': cube.id}) }}">show</a>
-                    <a href="{{ path('app_cube_edit', {'id': cube.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_cube_new') }}">Create new</a>
+            <div class="cube-item">
+
+                 
+<div class="cube-icon-box">
+    {% if '4x4' in cube.description %}
+        <div class="rubik-icon rubik-4x4">
+            {% for i in 1..16 %}
+                <span></span>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="rubik-icon rubik-3x3">
+            {% for i in 1..9 %}
+                <span></span>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+                 
+
+                <div class="cube-details">
+
+                    <div class="cube-name">
+                        {{ cube.description }}
+                    </div>
+
+                    <div class="cube-id">
+                        CUBE #{{ cube.id }}
+                    </div>
+
+                    <div class="cube-actions">
+                        <a href="{{ path('app_cube_show', {'id': cube.id}) }}">
+                            View
+                        </a>
+
+                        <a href="{{ path('app_cube_edit', {'id': cube.id}) }}">
+                            Edit
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% else %}
+            <p>No cubes found.</p>
+        {% endfor %}
+
+    </div>
+
 {% endblock %}

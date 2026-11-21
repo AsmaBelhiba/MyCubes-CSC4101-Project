@@ -18,3 +18,10 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+# Eclipse IDE
+/.project
+/.buildpath
+/.settings/
+
+# Downloaded archive
+/public/gh-pages.zip

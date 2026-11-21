@@ -17,6 +17,17 @@
             </tr>
         </tbody>
     </table>
+    
+    
+    {% if cube.imageName %}
+    	<div>
+        	<h3>Image du cube</h3>
+        	<img src="{{ vich_uploader_asset(cube, 'imageFile') }}"
+            	 alt="{{ cube.description }}"
+             	style="max-width: 300px; height: auto;">
+    	</div>
+    {% endif %}
+    
 
     <a href="{{ path('app_cube_index') }}">back to list</a>
 

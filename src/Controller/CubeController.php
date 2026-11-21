@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cube;
+use App\Entity\CubeCollection;
 use App\Form\CubeType;
 use App\Repository\CubeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,10 +23,11 @@ final class CubeController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_cube_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_cube_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, CubeCollection $cubeCollection): Response
     {
         $cube = new Cube();
+        $cube->setCubeCollection($cubeCollection);
         $form = $this->createForm(CubeType::class, $cube);
         $form->handleRequest($request);
 
@@ -33,7 +35,13 @@ final class CubeController extends AbstractController
             $entityManager->persist($cube);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_cube_index', [], Response::HTTP_SEE_OTHER);
+            
+            return $this->redirectToRoute(
+                'app_cube_collection_show',
+                ['id' => $cubeCollection->getId()],
+                Response::HTTP_SEE_OTHER
+                );
+            
         }
 
         return $this->render('cube/new.html.twig', [
@@ -59,7 +67,11 @@ final class CubeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_cube_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'app_cube_collection_show',
+                ['id' => $cube->getCubeCollection()->getId()],
+                Response::HTTP_SEE_OTHER
+                );
         }
 
         return $this->render('cube/edit.html.twig', [
@@ -71,11 +83,16 @@ final class CubeController extends AbstractController
     #[Route('/{id}', name: 'app_cube_delete', methods: ['POST'])]
     public function delete(Request $request, Cube $cube, EntityManagerInterface $entityManager): Response
     {
+        $collectionId = $cube->getCubeCollection()->getId();
         if ($this->isCsrfTokenValid('delete'.$cube->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($cube);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_cube_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(
+            'app_cube_collection_show',
+            ['id' => $collectionId],
+            Response::HTTP_SEE_OTHER
+            );
     }
 }

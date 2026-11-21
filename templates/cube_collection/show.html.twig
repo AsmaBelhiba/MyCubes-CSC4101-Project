@@ -16,6 +16,7 @@
             </tr>
         </tbody>
     </table>
-
+	
+	<a href="{{ path('app_cube_new', {'id': cube_collection.id}) }}">Ajouter un cube</a>
     <a href="{{ path('app_member_show', {'id': cube_collection.member.id}) }}">Retour au membre</a>
 {% endblock %}

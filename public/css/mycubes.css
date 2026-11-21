@@ -1,0 +1,569 @@
+
+
+:root {
+    --ink: #252d33;
+    --paper: #fcfcfa;
+    --yellow: #f4d34e;
+    --line: #cbd0d3;
+    --muted: #68737c;
+    --soft-gray: #f0f2f2;
+    --link: #286477;
+}
+
+
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+}
+
+body.mycubes-app {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+a {
+    color: var(--link);
+}
+
+a:hover {
+    color: var(--ink);
+}
+
+/* MAIN LAYOUT */
+
+.site-shell {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+}
+
+.site-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* HEADER */
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 78px;
+    padding: 15px 32px;
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    flex-shrink: 0;
+}
+
+.site-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink);
+    font-size: 23px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.site-logo:hover {
+    color: var(--ink);
+}
+
+.site-subtitle {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+/* RUBIK'S CUBE LOGO */
+
+.cube-logo {
+    display: grid;
+    grid-template-columns: repeat(3, 7px);
+    grid-template-rows: repeat(3, 7px);
+    gap: 2px;
+    padding: 10px;
+    background: var(--yellow);
+    border-radius: 4px;
+}
+
+.cube-logo span {
+    border: 1px solid var(--ink);
+    border-radius: 1px;
+}
+
+.cube-logo span:nth-child(1),
+.cube-logo span:nth-child(6) {
+    background: #e65e4c;
+}
+
+.cube-logo span:nth-child(2),
+.cube-logo span:nth-child(7) {
+    background: #4399b9;
+}
+
+.cube-logo span:nth-child(3),
+.cube-logo span:nth-child(8) {
+    background: #f8f7f0;
+}
+
+.cube-logo span:nth-child(4) {
+    background: #6aa56d;
+}
+
+.cube-logo span:nth-child(5),
+.cube-logo span:nth-child(9) {
+    background: var(--yellow);
+}
+
+/* SIDEBAR */
+
+.site-sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px 15px;
+    background: var(--paper);
+    border-right: 1px solid var(--ink);
+}
+
+.sidebar-label {
+    padding-left: 12px;
+    margin-bottom: 18px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.site-sidebar .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.site-sidebar .nav-link,
+.sidebar-extra-link {
+    display: block;
+    padding: 11px 12px;
+    color: var(--ink);
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+}
+
+.site-sidebar a:hover,
+.site-sidebar .active > a,
+.site-sidebar a.active {
+    background: var(--yellow);
+    color: var(--ink);
+}
+
+.sidebar-extra-link {
+    margin-top: 5px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px 12px 0;
+    border-top: 1px solid var(--line);
+}
+
+.sidebar-footer span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.sidebar-footer small {
+    display: block;
+    margin-top: 12px;
+    color: var(--muted);
+}
+
+/* MAIN CONTENT */
+
+.site-content {
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 40px 15px;
+    background: var(--paper);
+}
+
+.site-content h1 {
+    margin-bottom: 15px;
+    color: var(--ink);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.site-content h2 {
+    margin: 15px 0 10px;
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.site-content h3 {
+    margin: 15px 0 10px;
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* TABLES */
+
+.site-content .table {
+    width: 100%;
+    color: var(--ink);
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: var(--soft-gray);
+}
+
+.site-content .table th,
+.site-content .table td {
+    padding: 9px 12px;
+    border-color: var(--line);
+    vertical-align: middle;
+}
+
+.site-content .table th {
+    font-weight: 600;
+}
+
+.site-content .table tbody tr:hover {
+    background: #f6f7f5;
+}
+
+/* BUTTONS */
+
+.site-content .btn {
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.site-content .btn-primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: white;
+}
+
+.site-content .btn-primary:hover {
+    background: #45535d;
+    border-color: #45535d;
+    color: white;
+}
+
+.site-content .btn-secondary {
+    background: var(--soft-gray);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.site-content .btn-secondary:hover {
+    background: #e0e5e6;
+    border-color: var(--muted);
+    color: var(--ink);
+}
+
+.site-content .btn-danger {
+    background: #c65c4a;
+    border-color: #c65c4a;
+    color: white;
+}
+
+.site-content .btn-danger:hover {
+    background: #a94638;
+    border-color: #a94638;
+    color: white;
+}
+
+/* FORMS */
+
+.site-content form {
+    max-width: 750px;
+}
+
+.site-content .form-control,
+.site-content .form-select {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 12px;
+    background: white;
+    color: var(--ink);
+}
+
+.site-content .form-control:focus,
+.site-content .form-select:focus {
+    border-color: #b2a03e;
+    box-shadow: 0 0 0 3px rgba(244, 211, 78, 0.2);
+}
+
+.site-content input[type="checkbox"] {
+    accent-color: var(--yellow);
+}
+
+.site-content label {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+/* CUBE LIST */
+
+.cube-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cube-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: var(--soft-gray);
+    border-radius: 4px;
+}
+
+.cube-thumbnail {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    object-fit: contain;
+    background: white;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.cube-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.cube-name {
+    margin-bottom: 5px;
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cube-id {
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.cube-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cube-actions a {
+    color: var(--link);
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+/* IMAGES */
+
+.site-content img {
+    max-width: 100%;
+}
+
+.site-content img:not(.cube-thumbnail) {
+    max-height: 250px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* FOOTER — ORIGINAL POSITION, THICKER YELLOW STRIP */
+
+.site-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+
+    height: 65px;
+    min-height: 65px;
+    flex: 0 0 65px;
+
+    padding: 12px 24px;
+    margin: 0;
+
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border-top: 1px solid var(--ink);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .site-layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+    }
+
+    .site-content {
+        padding: 20px 25px 15px;
+    }
+}
+
+@media (max-width: 700px) {
+    body.mycubes-app {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .site-shell {
+        min-height: 100vh;
+        height: auto;
+    }
+
+    .site-layout {
+        display: block;
+        overflow: visible;
+    }
+
+    .site-header {
+        padding: 15px 20px;
+    }
+
+    .site-subtitle {
+        display: none;
+    }
+
+    .site-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--ink);
+        padding: 15px;
+        overflow: visible;
+    }
+
+    .site-sidebar .navbar-nav {
+        gap: 3px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .site-content {
+        padding: 20px;
+        overflow: visible;
+    }
+
+    .site-content h1 {
+        font-size: 25px;
+    }
+
+    .cube-item {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .cube-thumbnail {
+        width: 70px;
+        height: 70px;
+    }
+
+    .cube-name {
+        font-size: 16px;
+    }
+
+    .site-footer {
+        height: auto;
+        min-height: 65px;
+        padding: 12px 15px;
+        font-size: 9px;
+    }
+}
+
+
+/* Rubik's cube icons in the cube list */
+
+.cube-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.rubik-icon {
+    display: grid;
+    width: 60px;
+    height: 60px;
+    padding: 4px;
+    gap: 3px;
+    background: #252d33;
+    border: 2px solid #252d33;
+    border-radius: 3px;
+}
+
+.rubik-3x3 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.rubik-4x4 {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2px;
+}
+
+.rubik-icon span {
+    border-radius: 1px;
+}
+
+.rubik-icon span:nth-child(5n + 1) {
+    background: #e65e4c;
+}
+
+.rubik-icon span:nth-child(5n + 2) {
+    background: #4399b9;
+}
+
+.rubik-icon span:nth-child(5n + 3) {
+    background: #6aa56d;
+}
+
+.rubik-icon span:nth-child(5n + 4) {
+    background: #f4d34e;
+}
+
+.rubik-icon span:nth-child(5n) {
+    background: #f8f7f0;
+}

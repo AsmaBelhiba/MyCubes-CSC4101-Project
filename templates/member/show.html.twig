@@ -21,7 +21,48 @@
     <a href="{{ path('app_cube_collection_show', {'id': member.cubeCollection.id}) }}">
         Mon inventaire
     </a>
+	
+	
+<h2>Galeries du membre</h2>
 
+	<table class="table table-striped">
+    	<thead>
+        	<tr>
+            	<th>Id</th>
+            	<th>Description</th>
+            	<th>Publiée</th>
+            	<th>Actions</th>
+        	</tr>
+    	</thead>
+    	<tbody>
+            {% for cube_gallery in member.cubeGalleries %}
+            	<tr>
+                	<td>{{ cube_gallery.id }}</td>
+                	<td>{{ cube_gallery.description }}</td>
+                	<td>{{ cube_gallery.publiee ? 'Oui' : 'Non' }}</td>
+                	<td>
+                    	<a href="{{ path('app_cube_gallery_show', {'id': cube_gallery.id}) }}"
+                       		class="btn btn-sm btn-primary">Voir</a>
+                    	<a href="{{ path('app_cube_gallery_edit', {'id': cube_gallery.id}) }}"
+                       		class="btn btn-sm btn-secondary">Modifier</a>
+                	</td>
+            	</tr>
+            {% else %}
+            	<tr>
+                	<td colspan="4">Aucune galerie trouvée.</td>
+            	</tr>
+            {% endfor %}
+    	</tbody>
+	</table>
+	
+	
+	<a href="{{ path('app_cube_gallery_new', {'id': member.id}) }}"
+   		class="btn btn-primary">
+    		Créer une galerie
+	</a>
+	
+	
+	
     <p>
         <a href="{{ path('app_member_index') }}">Retour à la liste des membres</a>
     </p>

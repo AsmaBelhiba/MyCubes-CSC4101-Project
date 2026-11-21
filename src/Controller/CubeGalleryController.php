@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Cube;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use App\Entity\Member;
 
 #[Route('/cube/gallery')]
 final class CubeGalleryController extends AbstractController
@@ -20,30 +21,41 @@ final class CubeGalleryController extends AbstractController
     public function index(CubeGalleryRepository $cubeGalleryRepository): Response
     {
         return $this->render('cube_gallery/index.html.twig', [
-            'cube_galleries' => $cubeGalleryRepository->findAll(),
+            'cube_galleries' => $cubeGalleryRepository->findBy(['publiee' => true]),
         ]);
     }
 
-    #[Route('/new', name: 'app_cube_gallery_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $cubeGallery = new CubeGallery();
-        $form = $this->createForm(CubeGalleryType::class, $cubeGallery);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($cubeGallery);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_cube_gallery_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('cube_gallery/new.html.twig', [
-            'cube_gallery' => $cubeGallery,
-            'form' => $form,
-        ]);
+    
+    #[Route('/new/{id}', name: 'app_cube_gallery_new', methods: ['GET', 'POST'])]
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Member $member
+        ): Response
+        {
+            $cubeGallery = new CubeGallery();
+            $cubeGallery->setMember($member);
+            
+            $form = $this->createForm(CubeGalleryType::class, $cubeGallery);
+            $form->handleRequest($request);
+            
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($cubeGallery);
+                $entityManager->flush();
+                
+                return $this->redirectToRoute(
+                    'app_member_show',
+                    ['id' => $member->getId()],
+                    Response::HTTP_SEE_OTHER
+                    );
+            }
+            
+            return $this->render('cube_gallery/new.html.twig', [
+                'cube_gallery' => $cubeGallery,
+                'form' => $form,
+            ]);
     }
-
+    
     #[Route('/{id}', name: 'app_cube_gallery_show', methods: ['GET'])]
     public function show(CubeGallery $cubeGallery): Response
     {
@@ -76,7 +88,13 @@ final class CubeGalleryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_cube_gallery_index', [], Response::HTTP_SEE_OTHER);
+            
+            return $this->redirectToRoute(
+                'app_member_show',
+                ['id' => $cubeGallery->getMember()->getId()],
+                Response::HTTP_SEE_OTHER
+                );
+            
         }
 
         return $this->render('cube_gallery/edit.html.twig', [
@@ -88,11 +106,18 @@ final class CubeGalleryController extends AbstractController
     #[Route('/{id}', name: 'app_cube_gallery_delete', methods: ['POST'])]
     public function delete(Request $request, CubeGallery $cubeGallery, EntityManagerInterface $entityManager): Response
     {
+        $memberId = $cubeGallery->getMember()->getId();
+        
         if ($this->isCsrfTokenValid('delete'.$cubeGallery->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($cubeGallery);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_cube_gallery_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(
+            'app_member_show',
+            ['id' => $memberId],
+            Response::HTTP_SEE_OTHER
+            );
+        
     }
 }

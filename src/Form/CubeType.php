@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CubeType extends AbstractType
 {
@@ -16,9 +17,13 @@ class CubeType extends AbstractType
     {
         $builder
             ->add('description')
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+            ])
             ->add('cubeCollection', EntityType::class, [
                 'class' => CubeCollection::class,
                 'choice_label' => 'id',
+                'disabled' => true,
             ])
             ->add('cubeGalleries', EntityType::class, [
                 'class' => CubeGallery::class,

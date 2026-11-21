@@ -1,35 +1,62 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}CubeCollection index{% endblock %}
+{% block title %}Cube Collections | myCubes{% endblock %}
 
 {% block body %}
-    <h1>CubeCollection index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="mb-4">
+        <div class="text-muted small mb-2">
+            COLLECTIONS / ALL COLLECTIONS
+        </div>
+
+        <h1>Cube Collections</h1>
+
+        <p class="text-muted">
+            Browse the cube collections of our members.
+        </p>
+    </div>
+
+    <div class="cube-list">
+
         {% for cube_collection in cube_collections %}
-            <tr>
-                <td>{{ cube_collection.id }}</td>
-                <td>{{ cube_collection.description }}</td>
-                <td>
-                    <a href="{{ path('app_cube_collection_show', {'id': cube_collection.id}) }}">show</a>
-                    <a href="{{ path('app_cube_collection_edit', {'id': cube_collection.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_cube_collection_new') }}">Create new</a>
+            <div class="cube-item">
+
+                <div class="cube-details">
+
+                    
+					<div class="cube-name">
+                        {{ cube_collection.description
+                            | replace({
+            				'Collection de ': '',
+            				'@localhost': ''
+                            })
+                            | capitalize
+                        }}'s Cube Collection
+					</div>
+
+<div class="cube-id">
+    COLLECTION #{{ cube_collection.id }}
+</div>
+                    
+
+                    <div class="cube-actions">
+                        <a href="{{ path('app_cube_collection_show', {'id': cube_collection.id}) }}">
+                            View collection
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <p>No collections found.</p>
+
+        {% endfor %}
+
+    </div>
+
 {% endblock %}

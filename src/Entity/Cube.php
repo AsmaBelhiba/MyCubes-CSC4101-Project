@@ -6,8 +6,11 @@ use App\Repository\CubeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: CubeRepository::class)]
+#[Vich\Uploadable]
 class Cube
 {
     #[ORM\Id]
@@ -17,6 +20,17 @@ class Cube
     
     #[ORM\Column(length: 255)]
     private ?string $description = null;
+    
+    
+    #[Vich\UploadableField(mapping: 'cube_images', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+    
     
     #[ORM\ManyToOne(inversedBy: 'cubes')]
     #[ORM\JoinColumn(nullable: false)]
@@ -91,6 +105,46 @@ class Cube
             $cubeGallery->removeCube($this);
         }
 
+        return $this;
+    }
+    
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+    
+    public function setImageFile(?File $imageFile = null): static
+    {
+        $this->imageFile = $imageFile;
+        
+        if ($imageFile !== null) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+        
+        return $this;
+    }
+    
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+    
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
+        
+        return $this;
+    }
+    
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+    
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        
         return $this;
     }
 }

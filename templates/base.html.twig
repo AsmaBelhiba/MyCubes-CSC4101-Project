@@ -1,56 +1,99 @@
 
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <!-- Favicon-->
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {% block stylesheets %}
-            <!-- Bootstrap icons-->
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-            <!-- Core theme CSS (includes Bootstrap)-->
-            <link href="{{ asset('css/styles.css', 'bootstrap') }}" rel="stylesheet">
-        {% endblock %} {# stylesheets #}
-    
-    </head>
-    <body>
-        {% block menu %}
-            <!-- Navigation -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container px-4 px-lg-5">
-                    <a class="navbar-brand" href="{{ path('app_cube_collection_index') }}">MyCubes</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+    <title>{% block title %}myCubes{% endblock %}</title>
+
+    {% block stylesheets %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="{{ asset('css/styles.css', 'bootstrap') }}" rel="stylesheet">
+        <link href="{{ asset('css/mycubes.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body class="mycubes-app">
+
+    <div class="site-shell">
+
+        <header class="site-header">
+            <a class="site-logo"
+               href="{{ path('app_member_index') }}">
+                <span class="cube-logo" aria-hidden="true">
+    			<span></span><span></span><span></span>
+    			<span></span><span></span><span></span>
+    			<span></span><span></span><span></span>
+				</span>
+				<span>myCubes</span>
+            </a>
+
+            <span class="site-subtitle">
+                A PERSONAL CUBE COLLECTION
+            </span>
+        </header>
+
+        <div class="site-layout">
+
+            {% block menu %}
+                <aside class="site-sidebar">
+
+                    <div class="sidebar-label">EXPLORE</div>
+
+                    <nav aria-label="Main navigation">
+                        <ul class="navbar-nav">
                             {{ render_bootstrap_menu('main') }}
                         </ul>
+
+                        <a class="sidebar-extra-link"
+                           href="{{ path('app_cube_gallery_index') }}">
+                            Galleries
+                        </a>
+
+                        <a class="sidebar-extra-link"
+                           href="{{ path('app_member_index') }}">
+                            Members
+                        </a>
+                    </nav>
+
+                    <div class="sidebar-footer">
+                        <span>MY WORKSPACE</span>
+                        <small>Made for cube lovers.</small>
                     </div>
-                </div>
-            </nav>
-        {% endblock %} {# menu #}
 
-        {% block body %}
-        {% endblock %} {# body #}
+                </aside>
+            {% endblock %}
 
+            <main class="site-content">
+                {% block body %}
+                {% endblock %}
+            </main>
 
-        {% block javascripts %}
-            <!-- Symfony asset_mapper / importmap -->
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-            <!-- StartBootstrap : Bootstrap core JS-->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-            <!-- StartBootstrap : Core theme JS-->
-            <script src="{{ asset('js/scripts.js', 'bootstrap') }}"></script>
-        {% endblock %} {# javascripts #}
+        </div>
 
-        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphp_hot_reload %}
-            <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-            <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-            <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
-    </body>
+        <footer class="site-footer">
+            <span>MYCUBES / PERSONAL PROJECT</span>
+            <span>BUILT WITH SYMFONY</span>
+        </footer>
+
+    </div>
+
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('js/scripts.js', 'bootstrap') }}"></script>
+    {% endblock %}
+
+    {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+    {% if frankenphp_hot_reload %}
+        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+    {% endif %}
+
+</body>
 </html>
