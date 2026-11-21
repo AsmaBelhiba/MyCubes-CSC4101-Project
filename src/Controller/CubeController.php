@@ -11,21 +11,41 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/cube')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 final class CubeController extends AbstractController
 {
+    
     #[Route(name: 'app_cube_index', methods: ['GET'])]
     public function index(CubeRepository $cubeRepository): Response
     {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $cubes = $cubeRepository->findAll();
+        } else {
+            $member = $this->getUser();
+            $cubeCollection = $member->getCubeCollection();
+            
+            $cubes = $cubeCollection
+            ? $cubeCollection->getCubes()
+            : [];
+        }
+        
         return $this->render('cube/index.html.twig', [
-            'cubes' => $cubeRepository->findAll(),
+            'cubes' => $cubes,
         ]);
     }
+    
 
     #[Route('/new/{id}', name: 'app_cube_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, CubeCollection $cubeCollection): Response
     {
+        if ($this->getUser() !== $cubeCollection->getMember()) {
+            throw $this->createAccessDeniedException(
+                "You cannot add a cube to another member's collection!"
+                );
+        }
         $cube = new Cube();
         $cube->setCubeCollection($cubeCollection);
         $form = $this->createForm(CubeType::class, $cube);
@@ -50,17 +70,33 @@ final class CubeController extends AbstractController
         ]);
     }
 
+    
     #[Route('/{id}', name: 'app_cube_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Cube $cube): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN')
+        || ($this->getUser() === $cube->getCubeCollection()->getMember());
+        
+        if (!$hasAccess) {
+            throw $this->createAccessDeniedException(
+                "You cannot access another member's cube!"
+                );
+        }
+        
         return $this->render('cube/show.html.twig', [
             'cube' => $cube,
         ]);
     }
+    
 
     #[Route('/{id}/edit', name: 'app_cube_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Cube $cube, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser() !== $cube->getCubeCollection()->getMember()) {
+            throw $this->createAccessDeniedException(
+                "You cannot edit another member's cube!"
+                );
+        }
         $form = $this->createForm(CubeType::class, $cube);
         $form->handleRequest($request);
 
@@ -83,6 +119,11 @@ final class CubeController extends AbstractController
     #[Route('/{id}', name: 'app_cube_delete', methods: ['POST'])]
     public function delete(Request $request, Cube $cube, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser() !== $cube->getCubeCollection()->getMember()) {
+            throw $this->createAccessDeniedException(
+                "You cannot delete another member's cube!"
+                );
+        }
         $collectionId = $cube->getCubeCollection()->getId();
         if ($this->isCsrfTokenValid('delete'.$cube->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($cube);

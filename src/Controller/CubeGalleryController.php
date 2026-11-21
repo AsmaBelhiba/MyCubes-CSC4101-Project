@@ -17,13 +17,38 @@ use App\Entity\Member;
 #[Route('/cube/gallery')]
 final class CubeGalleryController extends AbstractController
 {
+    
     #[Route(name: 'app_cube_gallery_index', methods: ['GET'])]
     public function index(CubeGalleryRepository $cubeGalleryRepository): Response
     {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $cubeGalleries = $cubeGalleryRepository->findAll();
+        } else {
+            $cubeGalleries = $cubeGalleryRepository->findBy(['publiee' => true]);
+            
+            if ($this->getUser() !== null) {
+                $memberGalleries = $cubeGalleryRepository->findBy([
+                    'member' => $this->getUser()
+                ]);
+                
+                foreach ($memberGalleries as $gallery) {
+                    $cubeGalleries[$gallery->getId()] = $gallery;
+                }
+                
+                $cubeGalleries = array_values(
+                    array_reduce($cubeGalleries, function ($result, $gallery) {
+                        $result[$gallery->getId()] = $gallery;
+                        return $result;
+                    }, [])
+                    );
+            }
+        }
+        
         return $this->render('cube_gallery/index.html.twig', [
-            'cube_galleries' => $cubeGalleryRepository->findBy(['publiee' => true]),
+            'cube_galleries' => $cubeGalleries,
         ]);
     }
+    
 
     
     #[Route('/new/{id}', name: 'app_cube_gallery_new', methods: ['GET', 'POST'])]
@@ -33,6 +58,11 @@ final class CubeGalleryController extends AbstractController
         Member $member
         ): Response
         {
+            if ($this->getUser() !== $member) {
+                throw $this->createAccessDeniedException(
+                    "You cannot create a gallery for another member!"
+                    );
+            }
             $cubeGallery = new CubeGallery();
             $cubeGallery->setMember($member);
             
@@ -56,13 +86,25 @@ final class CubeGalleryController extends AbstractController
             ]);
     }
     
+    
     #[Route('/{id}', name: 'app_cube_gallery_show', methods: ['GET'])]
     public function show(CubeGallery $cubeGallery): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN')
+        || $cubeGallery->isPubliee()
+        || ($this->getUser() === $cubeGallery->getMember());
+        
+        if (!$hasAccess) {
+            throw $this->createAccessDeniedException(
+                "You cannot access this private gallery!"
+                );
+        }
+        
         return $this->render('cube_gallery/show.html.twig', [
             'cube_gallery' => $cubeGallery,
         ]);
     }
+    
     
     #[Route('/{cube_gallery_id}/cube/{cube_id}', name: 'app_cube_gallery_cube_show', methods: ['GET'])]
     public function cubeShow(
@@ -70,7 +112,19 @@ final class CubeGalleryController extends AbstractController
         #[MapEntity(id: 'cube_id')] Cube $cube
         ): Response {
             if (!$cubeGallery->getCubes()->contains($cube)) {
-                throw $this->createNotFoundException('The cube does not belong to this gallery.');
+                throw $this->createNotFoundException(
+                    'The cube does not belong to this gallery.'
+                    );
+            }
+            
+            $hasAccess = $this->isGranted('ROLE_ADMIN')
+            || $cubeGallery->isPubliee()
+            || ($this->getUser() === $cubeGallery->getMember());
+            
+            if (!$hasAccess) {
+                throw $this->createAccessDeniedException(
+                    "You cannot access a cube from this private gallery!"
+                    );
             }
             
             return $this->render('cube_gallery/cubeshow.html.twig', [
@@ -78,10 +132,16 @@ final class CubeGalleryController extends AbstractController
                 'cube' => $cube,
             ]);
     }
+    
 
     #[Route('/{id}/edit', name: 'app_cube_gallery_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CubeGallery $cubeGallery, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser() !== $cubeGallery->getMember()) {
+            throw $this->createAccessDeniedException(
+                "You cannot edit another member's gallery!"
+                );
+        }
         $form = $this->createForm(CubeGalleryType::class, $cubeGallery);
         $form->handleRequest($request);
 
@@ -106,6 +166,11 @@ final class CubeGalleryController extends AbstractController
     #[Route('/{id}', name: 'app_cube_gallery_delete', methods: ['POST'])]
     public function delete(Request $request, CubeGallery $cubeGallery, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser() !== $cubeGallery->getMember()) {
+            throw $this->createAccessDeniedException(
+                "You cannot delete another member's gallery!"
+                );
+        }
         $memberId = $cubeGallery->getMember()->getId();
         
         if ($this->isCsrfTokenValid('delete'.$cubeGallery->getId(), $request->getPayload()->getString('_token'))) {
